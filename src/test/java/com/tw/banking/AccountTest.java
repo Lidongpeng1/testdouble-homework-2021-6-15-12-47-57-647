@@ -1,10 +1,9 @@
 package com.tw.banking;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -40,4 +39,23 @@ class AccountTest {
         verify(spyTransactionRepository).addWithdraw(amount);
     }
 
+    @Test
+    public void should_call_addWithdraw_when_printStatement(){
+
+        // given
+        TransactionRepository transactionRepository = mock(TransactionRepository.class);
+
+        Printer printer = mock(Printer.class);
+
+        Account account = new Account(transactionRepository,printer);
+
+        List<Transaction> transactions = Collections.singletonList(new Transaction("date", 10));
+        // when
+        when(transactionRepository.allTransactions()).thenReturn(transactions);
+        account.printStatement();
+
+        // then
+//        verify(spyTransactionRepository).allTransactions();
+        verify(printer).print(transactions);
+    }
 }
