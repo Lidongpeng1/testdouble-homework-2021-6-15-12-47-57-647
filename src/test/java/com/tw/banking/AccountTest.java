@@ -26,4 +26,18 @@ class AccountTest {
         verify(spyTransactionRepository).addDeposit(amount);
     }
 
+    @Test
+    public void should_call_addWithdraw_when_withdraw(){
+
+        // given
+        TransactionRepository transactionRepository = new TransactionRepository(new Clock());
+        TransactionRepository spyTransactionRepository = Mockito.spy(transactionRepository);
+        Account account = new Account(spyTransactionRepository,new Printer(new Console()));
+        int amount = 10;
+        // when
+        account.withdraw(amount);
+        // then
+        verify(spyTransactionRepository).addWithdraw(amount);
+    }
+
 }
